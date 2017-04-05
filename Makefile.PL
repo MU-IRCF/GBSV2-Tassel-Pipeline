@@ -32,7 +32,7 @@ my %WriteMakefileArgs = (
     "Test2::Bundle::Extended" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.0006",
+  "VERSION" => "0.0007",
   "test" => {
     "TESTS" => "t/*.t"
   }

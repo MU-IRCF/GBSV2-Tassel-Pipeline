@@ -4,7 +4,7 @@ GBSV2::Tassel::Pipeline
 
 # VERSION
 
-version 0.0006
+version 0.0007
 
 # DESCRIPTION
 
@@ -17,13 +17,13 @@ Run Tassel's GBSv2 pipeline using parameters from a json configuration file
 Typical `config.json`:
 
     { 
-         "MINTAG"             :           "1",
-         "NAME"               :       "MyNIL",
-         "NUM_OF_FASTQ_FILES" :           "6",
-         "ENZYME_OR_ENZYMES"  :   "PstI-MspI",
-         "KEYFILE"            : "keyfile.txt",
-         "DATABASE"           :         "RAD",
-         "FASTQ_DIR"          :       "fastq",
+         "MINTAGS"            : ["1","5","10"],
+         "NAME"               :        "MyNIL",
+         "NUM_OF_FASTQ_FILES" :            "6",
+         "ENZYME_OR_ENZYMES"  :    "PstI-MspI",
+         "KEYFILE"            :  "keyfile.txt",
+         "DATABASE"           :          "RAD",
+         "FASTQ_DIR"          :        "fastq",
          "STEPS"              : ["100_GBSToTag",
                                  "200_TagToFASTQ",
                                  "300_bowtie2",
