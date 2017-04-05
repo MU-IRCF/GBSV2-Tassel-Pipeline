@@ -1,40 +1,40 @@
 # NAME
 
-GBSV2::Tassel::Pipeline
+GBSV2::Tassel::Pipeline  
 
 # VERSION
 
-version 0.001
+version 0.0002
 
 # DESCRIPTION
 
-Run Tassel's GBSv2 pipeline using parameters from a json configuration file
+Run Tassel's GBSv2 pipeline using parameters from a json configuration file  
 
 # SYNOPSIS
 
-    GBSV2/Tassel/Pipeline.pm config.json
+    GBSV2/Tassel/Pipeline.pm config.json  
 
 # DIAGNOSTICS
 
-    None implemented
+    None implemented  
 
 # INCOMPATIBILITIES
 
-    None known
+    None known  
 
-# BUGS AND LIMITATIONS
+# BUGS AND LIMITATIONS  
 
-    There are no known bugs in this module.
-    Please report problems to the author.
-    Patches are welcome.
+    There are no known bugs in this module.  
+    Please report problems to the author.  
+    Patches are welcome.  
 
-# DEPENDENCIES
+# DEPENDENCIES  
 
-Runtime requires
-    Perl 5.10.1 or later
-    SLURM scheduler
-    Linux
+Runtime requires  
+    Perl 5.10.1 or later  
+    SLURM scheduler  
+    Linux  
 
 Tests require
-    Test2::Bundle::Extended
-    File::Slurper
+    Test2::Bundle::Extended  
+    File::Slurper  

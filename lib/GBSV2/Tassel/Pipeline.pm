@@ -24,7 +24,7 @@ sub MAIN {
     my %config = read_config($config_file);
 
     my @script_names = map { write_script_for(STEP => $_, %config) } @{ $config{STEPS} };
-    
+
     system("sbatch $script_names[0]");
 }
 
@@ -263,39 +263,39 @@ sub write_script_for {
 =pod
 =head1 NAME
 
-GBSV2::Tassel::Pipeline
+GBSV2::Tassel::Pipeline  
 
 =head1 DESCRIPTION
 
-Run Tassel's GBSv2 pipeline using parameters from a json configuration file
+Run Tassel's GBSv2 pipeline using parameters from a json configuration file  
 
 =head1 SYNOPSIS
 
-    GBSV2/Tassel/Pipeline.pm config.json
+    GBSV2/Tassel/Pipeline.pm config.json  
 
 =head1 DIAGNOSTICS
 
-    None implemented
+    None implemented  
 
 =head1 INCOMPATIBILITIES
 
-    None known
+    None known  
 
-=head1 BUGS AND LIMITATIONS
+=head1 BUGS AND LIMITATIONS  
 
-    There are no known bugs in this module.
-    Please report problems to the author.
-    Patches are welcome.
+    There are no known bugs in this module.  
+    Please report problems to the author.  
+    Patches are welcome.  
 
-=head1 DEPENDENCIES
+=head1 DEPENDENCIES  
 
-Runtime requires
-    Perl 5.10.1 or later
-    SLURM scheduler
-    Linux
+Runtime requires  
+    Perl 5.10.1 or later  
+    SLURM scheduler  
+    Linux  
 
 Tests require
-    Test2::Bundle::Extended
-    File::Slurper
+    Test2::Bundle::Extended  
+    File::Slurper  
 
 =cut
