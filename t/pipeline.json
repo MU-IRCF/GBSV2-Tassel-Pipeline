@@ -1,0 +1,15 @@
+{ 
+     "MINTAG"             :           "1",
+     "NAME"               :       "MyNIL",
+     "NUM_OF_FASTQ_FILES" :           "6",
+     "ENZYME_OR_ENZYMES"  :   "PstI-MspI",
+     "KEYFILE"            : "keyfile.txt",
+     "DATABASE"           :         "RAD",
+     "STEPS"              : ["100_GBSToTag",
+                             "200_TagToFASTQ",
+                             "300_bowtie2",
+                             "400_SAMToGBS",
+                             "500_DiscoverSNP",
+                             "600_SNPQuality",
+                             "700_ProductionSNP"]
+}
