@@ -281,20 +281,20 @@ Run Tassel's GBSv2 pipeline using parameters from a json configuration file
 
     None known  
 
-=head1 BUGS AND LIMITATIONS  
+=head1 BUGS AND LIMITATIONS
 
     There are no known bugs in this module.  
     Please report problems to the author.  
     Patches are welcome.  
 
-=head1 DEPENDENCIES  
+=head1 DEPENDENCIES
 
 Runtime requires  
     Perl 5.10.1 or later  
     SLURM scheduler  
     Linux  
 
-Tests require
+Tests require  
     Test2::Bundle::Extended  
     File::Slurper  
 
