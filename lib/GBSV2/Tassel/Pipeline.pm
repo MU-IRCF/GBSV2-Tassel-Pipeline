@@ -57,11 +57,11 @@ module load Tassel/tassel-5.2.35
 run_pipeline.pl -Xms200G -Xmx450G  \
     -fork1                         \
         -GBSSeqToTagDBPlugin       \
+            -k  KEYFILE        \
+            -db DATABASE.db             \
             -c  MINTAG                  \
             -e  ENZYME_OR_ENZYMES          \
-            -i  fastq              \
-            -db DATABASE.db             \
-            -k  KEYFILE        \
+            -i  FASTQ_DIR              \
             -mxKmerNum 500000000   \
         -endPlugin                 \
     -runfork1
@@ -200,10 +200,10 @@ module load Tassel/tassel-5.2.35
 run_pipeline.pl -Xms10G -Xmx100G      \
     -fork1                            \
         -ProductionSNPCallerPluginV2  \
+            -k  KEYFILE           \
             -db DATABASE.db                \
             -e  ENZYME_OR_ENZYMES             \
-            -i  fastq                 \
-            -k  KEYFILE           \
+            -i  FASTQ_DIR                 \
             -o  RAD_MINTAGmintag.hdf5      \
         -endPlugin                    \
     -runfork1                         \

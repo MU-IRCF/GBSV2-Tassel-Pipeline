@@ -50,11 +50,11 @@ module load Tassel/tassel-5.2.35
 run_pipeline.pl -Xms200G -Xmx450G  \
     -fork1                         \
         -GBSSeqToTagDBPlugin       \
+            -k  keyfile.txt        \
+            -db RAD.db             \
             -c  1                  \
             -e  PstI-MspI          \
             -i  fastq              \
-            -db RAD.db             \
-            -k  keyfile.txt        \
             -mxKmerNum 500000000   \
         -endPlugin                 \
     -runfork1
@@ -229,10 +229,10 @@ module load Tassel/tassel-5.2.35
 run_pipeline.pl -Xms10G -Xmx100G      \
     -fork1                            \
         -ProductionSNPCallerPluginV2  \
+            -k  keyfile.txt           \
             -db RAD.db                \
             -e  PstI-MspI             \
             -i  fastq                 \
-            -k  keyfile.txt           \
             -o  RAD_1mintag.hdf5      \
         -endPlugin                    \
     -runfork1                         \
