@@ -15,10 +15,14 @@ my %config = read_config('t/pipeline.json');
 for my $step ( @{ $config{STEPS} } ) {
     my ($number, $lil_name) = split '_', $step;
 
-    is( get_script_for(STEP => $step, %config), 
-        expected_for($number),
-        "Step $number script correct"
-    );
+    for my $minTag ( @{$config{MINTAGS}} ) {
+        is( get_script_for(STEP   => $step,
+                           MINTAG => $minTag,
+                           %config), 
+            expected_for($number),
+            "Step $number script correct"
+        );
+    }
 }
 
 is("THIS IS A TEST\n", expected_for('minitest'), 'mini test worked');

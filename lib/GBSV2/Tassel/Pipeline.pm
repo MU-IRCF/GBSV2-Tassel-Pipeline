@@ -23,9 +23,26 @@ sub MAIN {
     my $config_file = shift // die 'config file required';
     my %config = read_config($config_file);
 
-    my @script_names = map { write_script_for(STEP => $_, %config) } @{ $config{STEPS} };
+    my @minTags = @{ $config{MINTAGS} };
+    my @steps   = @{ $config{STEPS} };
 
-    system("sbatch $script_names[0]");
+    for my $minTag ( @minTags ) {
+        my @script_names = ();
+        for my $step (@steps) {
+
+            my $script_name = write_script_for(
+                                    STEP => $_,
+                                    MINTAG => $minTag,
+                                    %config,
+                                );
+            if ($step eq '100_GBSToTag') {
+                my $minTagDir = "${minTag}minTag.dir";
+                mkdir $minTagDir;
+                chdir $minTagDir;
+            }
+            push @script_names, $script_name;
+        }
+    }
 }
 
 sub header_template {
@@ -59,7 +76,7 @@ run_pipeline.pl -Xms200G -Xmx450G  \
         -GBSSeqToTagDBPlugin       \
             -k  KEYFILE        \
             -db DATABASE.db             \
-            -c  MINTAG                  \
+            -c  1                  \
             -e  ENZYME_OR_ENZYMES          \
             -i  FASTQ_DIR              \
             -mxKmerNum 500000000   \
@@ -276,13 +293,13 @@ Run Tassel's GBSv2 pipeline using parameters from a json configuration file
 Typical C<config.json>:
 
     { 
-         "MINTAG"             :           "1",
-         "NAME"               :       "MyNIL",
-         "NUM_OF_FASTQ_FILES" :           "6",
-         "ENZYME_OR_ENZYMES"  :   "PstI-MspI",
-         "KEYFILE"            : "keyfile.txt",
-         "DATABASE"           :         "RAD",
-         "FASTQ_DIR"          :       "fastq",
+         "MINTAGS"            : ["1","5","10"],
+         "NAME"               :        "MyNIL",
+         "NUM_OF_FASTQ_FILES" :            "6",
+         "ENZYME_OR_ENZYMES"  :    "PstI-MspI",
+         "KEYFILE"            :  "keyfile.txt",
+         "DATABASE"           :          "RAD",
+         "FASTQ_DIR"          :        "fastq",
          "STEPS"              : ["100_GBSToTag",
                                  "200_TagToFASTQ",
                                  "300_bowtie2",
