@@ -19,7 +19,7 @@ my %module_build_args = (
     "Christopher Bottoms <molecules <at> cpan <dot> org>"
   ],
   "dist_name" => "GBSV2-Tassel-Pipeline",
-  "dist_version" => "0.0005",
+  "dist_version" => "0.0006",
   "license" => "perl",
   "module_name" => "GBSV2::Tassel::Pipeline",
   "recursive_test_files" => 1,

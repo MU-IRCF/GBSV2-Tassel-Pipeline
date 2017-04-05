@@ -4,7 +4,7 @@ GBSV2::Tassel::Pipeline
 
 # VERSION
 
-version 0.0005
+version 0.0006
 
 # DESCRIPTION
 
@@ -23,6 +23,7 @@ Typical `config.json`:
          "ENZYME_OR_ENZYMES"  :   "PstI-MspI",
          "KEYFILE"            : "keyfile.txt",
          "DATABASE"           :         "RAD",
+         "FASTQ_DIR"          :       "fastq",
          "STEPS"              : ["100_GBSToTag",
                                  "200_TagToFASTQ",
                                  "300_bowtie2",
