@@ -4,7 +4,7 @@ GBSV2::Tassel::Pipeline
 
 # VERSION
 
-version 0.0007
+version 0.0008
 
 # DESCRIPTION
 
@@ -28,7 +28,7 @@ Typical `config.json`:
                                  "200_TagToFASTQ",
                                  "300_bowtie2",
                                  "400_SAMToGBS",
-                                 "500_DiscoverSNP",
+                                 "500_DiscoverySNP",
                                  "600_SNPQuality",
                                  "700_ProductionSNP"]
     }
