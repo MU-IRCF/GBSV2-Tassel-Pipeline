@@ -9,7 +9,7 @@ use Test::LongString;
 
 use lib 'lib';
 
-use GBSV2::Tassel::Pipeline qw(get_script_for read_config);
+use GBS::Tassel::PipelineV2 qw(get_script_for read_config);
 
 my %config = read_config('t/pipeline.json'); 
 

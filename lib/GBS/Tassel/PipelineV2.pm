@@ -1,7 +1,7 @@
 #!/bin/env perl
-package GBSV2::Tassel::Pipeline;
+package GBS::Tassel::PipelineV2;
 
-# ABSTRACT: Run Tassel's GBSv2 pipeline using parameters from a json configuration file
+# ABSTRACT: Run Tassel's version 2 of the GBS pipeline using parameters from a json configuration file
 
 use strict;
 use warnings;

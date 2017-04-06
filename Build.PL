@@ -14,12 +14,12 @@ my %module_build_args = (
     "ExtUtils::MakeMaker" => 0,
     "Module::Build" => "0.28"
   },
-  "dist_abstract" => "Run Tassel's GBSv2 pipeline using parameters from a json configuration file",
+  "dist_abstract" => "Run Tassel's version 2 of the GBS pipeline using parameters from a json configuration file",
   "dist_author" => [
     "Christopher Bottoms <molecules <at> cpan <dot> org>"
   ],
   "dist_name" => "GBSV2-Tassel-Pipeline",
-  "dist_version" => "0.0007",
+  "dist_version" => "0.0008",
   "license" => "perl",
   "module_name" => "GBSV2::Tassel::Pipeline",
   "recursive_test_files" => 1,
@@ -34,6 +34,7 @@ my %module_build_args = (
   },
   "test_requires" => {
     "Test2::Bundle::Extended" => 0,
+    "Test::LongString" => 0,
     "lib" => 0
   }
 );
@@ -42,6 +43,7 @@ my %module_build_args = (
 my %fallback_build_requires = (
   "Module::Build" => "0.28",
   "Test2::Bundle::Extended" => 0,
+  "Test::LongString" => 0,
   "lib" => 0
 );
 

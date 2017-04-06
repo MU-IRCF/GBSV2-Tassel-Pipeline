@@ -7,7 +7,7 @@ use 5.010000;
 use ExtUtils::MakeMaker;
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Run Tassel's GBSv2 pipeline using parameters from a json configuration file",
+  "ABSTRACT" => "Run Tassel's version 2 of the GBS pipeline using parameters from a json configuration file",
   "AUTHOR" => "Christopher Bottoms <molecules <at> cpan <dot> org>",
   "BUILD_REQUIRES" => {
     "Module::Build" => "0.28"
@@ -30,9 +30,10 @@ my %WriteMakefileArgs = (
   },
   "TEST_REQUIRES" => {
     "Test2::Bundle::Extended" => 0,
+    "Test::LongString" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.0007",
+  "VERSION" => "0.0008",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -45,6 +46,7 @@ my %FallbackPrereqs = (
   "JSON" => 0,
   "Module::Build" => "0.28",
   "Test2::Bundle::Extended" => 0,
+  "Test::LongString" => 0,
   "autodie" => 0,
   "lib" => 0,
   "strict" => 0,
