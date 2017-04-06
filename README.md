@@ -4,7 +4,7 @@ GBSV2::Tassel::Pipeline
 
 # VERSION
 
-version 0.0008
+version 0.0009
 
 # DESCRIPTION
 
@@ -19,18 +19,9 @@ Typical `config.json`:
     { 
          "MINTAGS"            : ["1","5","10"],
          "NAME"               :        "MyNIL",
-         "NUM_OF_FASTQ_FILES" :            "6",
          "ENZYME_OR_ENZYMES"  :    "PstI-MspI",
          "KEYFILE"            :  "keyfile.txt",
-         "DATABASE"           :          "RAD",
-         "FASTQ_DIR"          :        "fastq",
-         "STEPS"              : ["100_GBSToTag",
-                                 "200_TagToFASTQ",
-                                 "300_bowtie2",
-                                 "400_SAMToGBS",
-                                 "500_DiscoverySNP",
-                                 "600_SNPQuality",
-                                 "700_ProductionSNP"]
+         "FASTQ_DIR"          :        "fastq"
     }
 
 # DIAGNOSTICS

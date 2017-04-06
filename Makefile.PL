@@ -21,7 +21,9 @@ my %WriteMakefileArgs = (
   "MIN_PERL_VERSION" => "5.010000",
   "NAME" => "GBSV2::Tassel::Pipeline",
   "PREREQ_PM" => {
+    "Cwd" => 0,
     "Exporter" => 0,
+    "File::Glob" => 0,
     "File::Slurper" => 0,
     "JSON" => 0,
     "autodie" => 0,
@@ -33,7 +35,7 @@ my %WriteMakefileArgs = (
     "Test::LongString" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.0008",
+  "VERSION" => "0.0009",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -41,7 +43,9 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "Cwd" => 0,
   "Exporter" => 0,
+  "File::Glob" => 0,
   "File::Slurper" => 0,
   "JSON" => 0,
   "Module::Build" => "0.28",

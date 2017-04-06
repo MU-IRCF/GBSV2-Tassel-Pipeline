@@ -19,12 +19,14 @@ my %module_build_args = (
     "Christopher Bottoms <molecules <at> cpan <dot> org>"
   ],
   "dist_name" => "GBSV2-Tassel-Pipeline",
-  "dist_version" => "0.0008",
+  "dist_version" => "0.0009",
   "license" => "perl",
   "module_name" => "GBSV2::Tassel::Pipeline",
   "recursive_test_files" => 1,
   "requires" => {
+    "Cwd" => 0,
     "Exporter" => 0,
+    "File::Glob" => 0,
     "File::Slurper" => 0,
     "JSON" => 0,
     "autodie" => 0,
