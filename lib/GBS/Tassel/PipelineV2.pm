@@ -9,6 +9,8 @@ use autodie;
 use v5.10;
 
 use JSON; # will automatically use the faster JSON::XS if installed
+use Cwd qw( getcwd);
+use File::Glob qw( bsd_glob );
 
 require Exporter;
 
@@ -276,16 +278,30 @@ END
 sub read_config {
     my $file = shift;
     my $hash_ref = decode_json(read_text($file));
-    if (! defined $hash_ref->{STEPS} ) {
-        $hash_ref->{STEPS} = [ qw(  100_GBSToTag
-                                    200_TagToFASTQ
-                                    300_bowtie2
-                                    400_SAMToGBS
-                                    500_DiscoverySNP
-                                    600_SNPQuality
-                                    700_ProductionSNP
-                               )];
-    }
+
+    $hash_ref->{STEPS} //= [ qw(  100_GBSToTag
+                                200_TagToFASTQ
+                                300_bowtie2
+                                400_SAMToGBS
+                                500_DiscoverySNP
+                                600_SNPQuality
+                                700_ProductionSNP
+                           )];
+
+    $hash_ref->{DATABASE} //= 'GBS';
+
+    my $fastq_dir = $hash_ref->{FASTQ_DIR} // 'die "FASTQ_DIR" required in json file';
+
+    my $starting_dir = getcwd;
+
+    chdir $fastq_dir;
+
+    my @fastq_files = bsd_glob('*fastq.txt.gz'); 
+
+    chdir $starting_dir;
+
+    $hash_ref->{NUM_OF_FASTQ_FILES} = scalar @fastq_files;
+
     return %{$hash_ref};
 }
 

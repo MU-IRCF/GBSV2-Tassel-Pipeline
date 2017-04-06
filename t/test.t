@@ -14,7 +14,9 @@ use lib 'lib';
 
 use GBS::Tassel::PipelineV2 qw(get_script_for read_config);
 
-my %config = read_config('t/pipeline.json'); 
+chdir 't';
+
+my %config = read_config('pipeline.json'); 
 
 for my $step ( @{ $config{STEPS} } ) {
     my ($number, $lil_name) = split '_', $step;

@@ -1,9 +1,7 @@
 { 
      "MINTAGS"            :          ["1"],
      "NAME"               :        "MyNIL",
-     "NUM_OF_FASTQ_FILES" :            "6",
      "ENZYME_OR_ENZYMES"  :    "PstI-MspI",
      "KEYFILE"            :  "keyfile.txt",
-     "DATABASE"           :          "GBS",
      "FASTQ_DIR"          :        "fastq"
 }
