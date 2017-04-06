@@ -12,7 +12,7 @@ use JSON; # will automatically use the faster JSON::XS if installed
 
 require Exporter;
 
-use File::Slurper qw(read_text);
+use File::Slurper qw(read_text write_text);
 
 our @ISA       = qw( Exporter       );
 our @EXPORT_OK = qw( get_script_for read_config );
