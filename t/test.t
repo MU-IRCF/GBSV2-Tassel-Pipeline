@@ -5,6 +5,9 @@ use autodie;
 use v5.10;
 
 use Test2::Bundle::Extended;
+
+plan 15;
+
 use Test::LongString;
 
 use lib 'lib';

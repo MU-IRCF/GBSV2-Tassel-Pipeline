@@ -24,7 +24,7 @@ sub MAIN {
     my %config = read_config($config_file);
 
     my @minTags = @{ $config{MINTAGS} };
-    my @steps   = @{ $config{STEPS} };
+    my @steps   = @{ $config{STEPS} // [] };
 
     for my $minTag ( @minTags ) {
 
@@ -276,6 +276,16 @@ END
 sub read_config {
     my $file = shift;
     my $hash_ref = decode_json(read_text($file));
+    if (! defined $hash_ref->{STEPS} ) {
+        $hash_ref->{STEPS} = [ qw(  100_GBSToTag
+                                    200_TagToFASTQ
+                                    300_bowtie2
+                                    400_SAMToGBS
+                                    500_DiscoverySNP
+                                    600_SNPQuality
+                                    700_ProductionSNP
+                               )];
+    }
     return %{$hash_ref};
 }
 
@@ -354,3 +364,4 @@ Typical C<config.json>:
     File::Slurper  
 
 =cut
+
