@@ -5,6 +5,7 @@ use autodie;
 use v5.10;
 
 use Test2::Bundle::Extended;
+use Test::LongString;
 
 use lib 'lib';
 
@@ -20,7 +21,13 @@ for my $step ( @{ $config{STEPS} } ) {
                            MINTAG => $minTag,
                            %config), 
             expected_for($number),
-            "Step $number script correct"
+            "Step $number script correct (Test2 comparison)"
+        );
+        is_string( get_script_for(STEP   => $step,
+                           MINTAG => $minTag,
+                           %config), 
+            expected_for($number),
+            "Step $number script correct (Test::LongString comparison)"
         );
     }
 }
@@ -55,7 +62,7 @@ run_pipeline.pl -Xms200G -Xmx450G  \
     -fork1                         \
         -GBSSeqToTagDBPlugin       \
             -k  keyfile.txt        \
-            -db RAD.db             \
+            -db GBS.db             \
             -c  1                  \
             -e  PstI-MspI          \
             -i  fastq              \
@@ -88,21 +95,21 @@ module load Tassel/tassel-5.2.35
 ln -s ../fastq
 
 # Copy database
-cp ../RAD.db ./RAD.db
+cp ../GBS.db ./GBS.db
 
 run_pipeline.pl -Xms5G -Xmx5G       \
     -fork1                          \
         -TagExportToFastqPlugin     \
             -c  1                   \
-            -db RAD.db              \
-            -o  RAD.1minTag.fastq   \
+            -db GBS.db              \
+            -o  1minTag.fastq       \
         -endPlugin                  \
     -runfork1                       \
 
 # Defaults
 #            -c 1
 
-sbatch cmd_300_bowtie2.sbatch
+sbatch cmd_300_bowtie2_1minTag_MyNIL.sbatch
 END
 
 '300' => <<'END',
@@ -118,9 +125,9 @@ END
 
 module load bowtie2/bowtie2-2.3.1
 
-bowtie2 --no-unal --un-gz unaligned.fastq --threads 12 --reorder -x /group/ircf/dbase/genomes/maize/maizesequence.org/AGPv2/bowtie2.3.1-index/AGPv2 RAD.1minTag.fastq > RAD.1minTag.sam
+bowtie2 --no-unal --un-gz unaligned.fastq --threads 12 --reorder -x /group/ircf/dbase/genomes/maize/maizesequence.org/AGPv2/bowtie2.3.1-index/AGPv2 1minTag.fastq > 1minTag.sam
 
-sbatch cmd_400_SAMToGBS.sbatch
+sbatch cmd_400_SAMToGBS_1minTag_MyNIL.sbatch
 END
 
 '400' => <<'END',
@@ -138,8 +145,8 @@ module load Tassel/tassel-5.2.35
 run_pipeline.pl -Xms40G -Xmx40G  \
     -fork1                       \
         -SAMToGBSdbPlugin        \
-            -db RAD.db           \
-            -i  RAD.1minTag.sam  \
+            -db GBS.db           \
+            -i  1minTag.sam      \
         -endPlugin               \
     -runfork1                    \
 
@@ -147,14 +154,14 @@ run_pipeline.pl -Xms40G -Xmx40G  \
 # -aProp 0.0
 # -aLen 0
 
-sbatch cmd_500_DiscoverySNP.sbatch
+sbatch cmd_500_DiscoverySNP_1minTag_MyNIL.sbatch
 END
 
 '500' => <<'END',
 #!/bin/bash
-#SBATCH -J 500_DiscoverSNP_1minTag_MyNIL
-#SBATCH -o 500_DiscoverSNP_1minTag_MyNIL.o_%j
-#SBATCH -e 500_DiscoverSNP_1minTag_MyNIL.e_%j
+#SBATCH -J 500_DiscoverySNP_1minTag_MyNIL
+#SBATCH -o 500_DiscoverySNP_1minTag_MyNIL.o_%j
+#SBATCH -e 500_DiscoverySNP_1minTag_MyNIL.e_%j
 #SBATCH --partition=BioCompute,Lewis
 #SBATCH --nodes=1
 #SBATCH --mem=160G
@@ -166,7 +173,7 @@ module load Tassel/tassel-5.2.35
 run_pipeline.pl -Xms120G -Xmx159G    \
     -fork1                           \
         -DiscoverySNPCallerPluginV2  \
-            -db RAD.db               \
+            -db GBS.db               \
         -endPlugin                   \
     -runfork1                        \
 
@@ -184,7 +191,7 @@ run_pipeline.pl -Xms120G -Xmx159G    \
 # -eC <End Chromosome> : End Chromosome : If missing, plugin processing ends with the last chromosome (lexicographically) in the database.
 # -deleteOldData <true | false> : Whether to delete old SNP data from the data bases. If true, all data base tables previously populated from the DiscoverySNPCallerPluginV2 and later steps in the GBSv2 pipeline is deleted. This allows for calling new SNPs with different pipeline parameters. (Default: false)
 
-sbatch cmd_600_SNPQuality.sbatch
+sbatch cmd_600_SNPQuality_1minTag_MyNIL.sbatch
 END
 
 '600' => <<'END',
@@ -202,7 +209,7 @@ module load Tassel/tassel-5.2.35
 run_pipeline.pl -Xms60G -Xmx60G         \
     -fork1                              \
         -SNPQualityProfilerPlugin       \
-            -db RAD.db                  \
+            -db GBS.db                  \
             -statFile snpQualStats.txt  \
         -endPlugin                      \
     -runfork1                           \
@@ -214,7 +221,7 @@ run_pipeline.pl -Xms60G -Xmx60G         \
 # -tname <Taxa set name > : Name of taxa set for database.
 # -statFile <Quality information output name > : Name of the output file containing the quality statistics in a tab delimited format.
 
-sbatch cmd_700_ProductionSNP.sbatch
+sbatch cmd_700_ProductionSNP_1minTag_MyNIL.sbatch
 END
 
 '700' => <<'END',
@@ -233,11 +240,11 @@ module load Tassel/tassel-5.2.35
 run_pipeline.pl -Xms10G -Xmx100G      \
     -fork1                            \
         -ProductionSNPCallerPluginV2  \
-            -k  keyfile.txt           \
-            -db RAD.db                \
+            -k  ../keyfile.txt           \
+            -db GBS.db                \
             -e  PstI-MspI             \
             -i  fastq                 \
-            -o  RAD_1mintag.hdf5      \
+            -o  1mintag.hdf5          \
         -endPlugin                    \
     -runfork1                         \
 

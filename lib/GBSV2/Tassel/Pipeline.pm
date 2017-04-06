@@ -27,21 +27,38 @@ sub MAIN {
     my @steps   = @{ $config{STEPS} };
 
     for my $minTag ( @minTags ) {
-        my @script_names = ();
+
+        STEP:
         for my $step (@steps) {
 
-            my $script_name = write_script_for(
-                                    STEP => $_,
+            # Change to minTag directory (after creating it)
+            if ($step eq '100_GBSToTag' && $minTag eq $minTags[0]) {
+
+                my $script_name = write_script_for(
+                                    STEP   => $step,
                                     MINTAG => $minTag,
                                     %config,
                                 );
+
+                system("sbatch $script_name");
+            }
+
             if ($step eq '100_GBSToTag') {
                 my $minTagDir = "${minTag}minTag.dir";
-                mkdir $minTagDir;
+                system("mkdir -p $minTagDir");
                 chdir $minTagDir;
+
+                next STEP;
             }
-            push @script_names, $script_name;
+
+            my $script_name = write_script_for(
+                                    STEP   => $step,
+                                    MINTAG => $minTag,
+                                    %config,
+                                );
         }
+
+        chdir '..';
     }
 }
 
@@ -109,14 +126,14 @@ run_pipeline.pl -Xms5G -Xmx5G       \
         -TagExportToFastqPlugin     \
             -c  MINTAG                   \
             -db DATABASE.db              \
-            -o  RAD.MINTAGminTag.fastq   \
+            -o  MINTAGminTag.fastq       \
         -endPlugin                  \
     -runfork1                       \
 
 # Defaults
 #            -c 1
 
-sbatch cmd_300_bowtie2.sbatch
+sbatch cmd_300_bowtie2_MINTAGminTag_NAME.sbatch
 END
 
         '300_bowtie2' => <<'END',
@@ -126,9 +143,9 @@ END
 
 module load bowtie2/bowtie2-2.3.1
 
-bowtie2 --no-unal --un-gz unaligned.fastq --threads 12 --reorder -x /group/ircf/dbase/genomes/maize/maizesequence.org/AGPv2/bowtie2.3.1-index/AGPv2 RAD.MINTAGminTag.fastq > RAD.MINTAGminTag.sam
+bowtie2 --no-unal --un-gz unaligned.fastq --threads 12 --reorder -x /group/ircf/dbase/genomes/maize/maizesequence.org/AGPv2/bowtie2.3.1-index/AGPv2 MINTAGminTag.fastq > MINTAGminTag.sam
 
-sbatch cmd_400_SAMToGBS.sbatch
+sbatch cmd_400_SAMToGBS_MINTAGminTag_NAME.sbatch
 END
 
         '400_SAMToGBS' => <<'END',
@@ -141,7 +158,7 @@ run_pipeline.pl -Xms40G -Xmx40G  \
     -fork1                       \
         -SAMToGBSdbPlugin        \
             -db DATABASE.db           \
-            -i  RAD.MINTAGminTag.sam  \
+            -i  MINTAGminTag.sam      \
         -endPlugin               \
     -runfork1                    \
 
@@ -149,10 +166,10 @@ run_pipeline.pl -Xms40G -Xmx40G  \
 # -aProp 0.0
 # -aLen 0
 
-sbatch cmd_500_DiscoverySNP.sbatch
+sbatch cmd_500_DiscoverySNP_MINTAGminTag_NAME.sbatch
 END
 
-        '500_DiscoverSNP' => <<'END',
+        '500_DiscoverySNP' => <<'END',
 #SBATCH --mem=160G
 #SBATCH --nodes=1
 #SBATCH --time=2-0
@@ -180,7 +197,7 @@ run_pipeline.pl -Xms120G -Xmx159G    \
 # -eC <End Chromosome> : End Chromosome : If missing, plugin processing ends with the last chromosome (lexicographically) in the database.
 # -deleteOldData <true | false> : Whether to delete old SNP data from the data bases. If true, all data base tables previously populated from the DiscoverySNPCallerPluginV2 and later steps in the GBSv2 pipeline is deleted. This allows for calling new SNPs with different pipeline parameters. (Default: false)
 
-sbatch cmd_600_SNPQuality.sbatch
+sbatch cmd_600_SNPQuality_MINTAGminTag_NAME.sbatch
 END
 
         '600_SNPQuality' => <<'END',
@@ -204,7 +221,7 @@ run_pipeline.pl -Xms60G -Xmx60G         \
 # -tname <Taxa set name > : Name of taxa set for database.
 # -statFile <Quality information output name > : Name of the output file containing the quality statistics in a tab delimited format.
 
-sbatch cmd_700_ProductionSNP.sbatch
+sbatch cmd_700_ProductionSNP_MINTAGminTag_NAME.sbatch
 END
 
         '700_ProductionSNP' => <<'END',
@@ -217,11 +234,11 @@ module load Tassel/tassel-5.2.35
 run_pipeline.pl -Xms10G -Xmx100G      \
     -fork1                            \
         -ProductionSNPCallerPluginV2  \
-            -k  KEYFILE           \
+            -k  ../KEYFILE           \
             -db DATABASE.db                \
             -e  ENZYME_OR_ENZYMES             \
             -i  FASTQ_DIR                 \
-            -o  RAD_MINTAGmintag.hdf5      \
+            -o  MINTAGmintag.hdf5          \
         -endPlugin                    \
     -runfork1                         \
 
@@ -263,12 +280,14 @@ sub read_config {
 }
 
 sub write_script_for {
-    my $step = shift;
-    my %opts = @_;
+    my %opt    = @_;
+    my $step   = $opt{STEP};
+    my $minTag = $opt{MINTAG};
+    my $name   = $opt{NAME};
 
-    my $script = get_script_for($step, %opts);
+    my $script = get_script_for( STEP => $step, %opt);
 
-    my $file_name = "$step.sbatch";
+    my $file_name = "cmd_${step}_${minTag}minTag_$name.sbatch";
 
     write_text($file_name, $script);
 
@@ -304,7 +323,7 @@ Typical C<config.json>:
                                  "200_TagToFASTQ",
                                  "300_bowtie2",
                                  "400_SAMToGBS",
-                                 "500_DiscoverSNP",
+                                 "500_DiscoverySNP",
                                  "600_SNPQuality",
                                  "700_ProductionSNP"]
     }

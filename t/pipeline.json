@@ -4,13 +4,13 @@
      "NUM_OF_FASTQ_FILES" :            "6",
      "ENZYME_OR_ENZYMES"  :    "PstI-MspI",
      "KEYFILE"            :  "keyfile.txt",
-     "DATABASE"           :          "RAD",
+     "DATABASE"           :          "GBS",
      "FASTQ_DIR"          :        "fastq",
      "STEPS"              : ["100_GBSToTag",
                              "200_TagToFASTQ",
                              "300_bowtie2",
                              "400_SAMToGBS",
-                             "500_DiscoverSNP",
+                             "500_DiscoverySNP",
                              "600_SNPQuality",
                              "700_ProductionSNP"]
 }
